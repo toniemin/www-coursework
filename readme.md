@@ -1,0 +1,1 @@
+Tampere University - WWW Programming 2019 - Coursework (10 ECTS)
