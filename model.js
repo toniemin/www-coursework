@@ -6,6 +6,20 @@ const port = 3000; // IMPORT PORT NUMBER
 
 mongoose.connect('mongodb://+'+hostname+':'+3000);
 
+// Schema representing a discussion.
+const discussionSchema = new Schema({
+  id: Number,
+  user_id: Number,
+  headline: String,
+  messages: []
+});
+
+const messageSchema = new Schema({
+  id: Number,
+  headline: String,
+  content: String
+});
+
 // Schema representing a user in the system.
 // 'role' is a reference to the RoleSchema 'id',
 // 'days_to_payment' is a number describing days
@@ -13,13 +27,13 @@ mongoose.connect('mongodb://+'+hostname+':'+3000);
 const UserSchema = new Schema({
   id: Number,
   role: Number,
-  name: String,
   username: String,
   password: String,
-  phone: String,
   email: String,
   days_to_payment: Number
 });
+
+const UserModel = exports.UserModel = mongoose.model('Users', UserSchema);
 
 const RoleSchema = new Schema({
   id: Number,
@@ -35,3 +49,4 @@ const PermissionSchema = new Schema({
 const User = mongoose.model('User', UserSchema);
 const Role = mongoose.model('Role', RoleSchema);
 const Permission = mongoose.model('Permission', PermissionSchema);
+
