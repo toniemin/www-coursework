@@ -33,6 +33,10 @@ app.use("/", router);
 // REST API router.
 app.use("/api", api_router);
 
+// Register body-parser.
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 app.listen(port, hostname, () => {
   console.log("Server listening on " + hostname + ":" + port + "!");
 });

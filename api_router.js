@@ -6,35 +6,24 @@
 
 const router = require("express").Router();
 const userController = require("./userController.js");
-
+const postController;
 /**
  * User
  * 
  */
 
-router.post("/user", (req, res) => {
-  
-});
-
-router.get("/user", (req, res) => {
-
-});
-
-router.put("/user", (req, res) => {
-
-});
-
-router.delete("/user", (req, res) => {
-
-});
+router.post("/user", userController.
 
 /**
  * Post
  * 
  */
-router.post("/post", (req, res) => {
+router.get('/posts', postController.index).
+  post('/posts', postController.create).
+  get('/posts/:id', postController.show).
+  put('/posts/:id', postController.update).
+  delete('/posts/:id', postController.destroy);
 
-});
 
 /**
  * Thread

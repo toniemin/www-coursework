@@ -1,7 +1,7 @@
 /**
  * WWW Programming 2019 - Coursework - Discussion forum.
  * 
- * 
+ * Model of the MVC-application. Uses mongoose with MongoDB.
  */
 
 const mongoose = require("mongoose");
@@ -10,7 +10,7 @@ const { Schema } = mongoose;
 const hostname = "0.0.0.0" // IMPORT HOSTNAME
 const port = 3000; // IMPORT PORT NUMBER
 
-mongoose.connect("mongodb://+"+hostname+":"+3000, {useNewUrlParser: true});
+mongoose.connect(`mongodb://localhost/forums`, {useNewUrlParser: true});
 
 const db = mongoose.connection;
 
@@ -24,8 +24,8 @@ const ObjectId = Schema.Types.ObjectId;
 // Schema representing a discussion.
 const threadSchema = new Schema({
   user: ObjectId,
-  date: Date,
-  headline: String,
+  createdAt: Date,
+  title: String,
   posts: [PostSchema]
 });
 
@@ -33,12 +33,12 @@ const Thread = exports.ThreadModel = mongoose.model("Threads", threadSchema);
 
 const postSchema = new Schema({
   user: ObjectId,
-  date: Date,
-  headline: String,
+  createdAt: Date,
+  title: String,
   content: String
 });
 
-const Post = exports.PostModel = mongoose.model("Posts", postSchema);
+const Post = exports.Post = mongoose.model("Posts", postSchema);
 
 // Schema representing a user in the system.
 // 'role' is a reference to the RoleSchema 'id',
@@ -52,11 +52,11 @@ const UserSchema = new Schema({
   days_to_payment: Number
 });
 
-const User = exports.UserModel = mongoose.model("Users", UserSchema);
+const User = exports.User = mongoose.model("Users", UserSchema);
 
 const permissionSchema = new Schema({
   level: Number,
   actions: [String]
 });
 
-const Permission = exports.PermissionModel = mongoose.model("Permissions", permissionSchema);
+const Permission = exports.Permission = mongoose.model("Permissions", permissionSchema);
