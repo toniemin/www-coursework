@@ -11,15 +11,23 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const hbs = require("express-hbs");
+const helmet = require('helmet');
 
 // Routers for hbs web templates and the REST API.
 const router = require("./router");
-const api_router = require("./api_router");
+const api_router = require("./api_router.js");
 
 const hostname = "0.0.0.0";
 const port = 3000;
 
 const app = express();
+
+// Register helmet.
+app.use(helmet());
+
+// Register body-parser.
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 // Set up template engine.
 app.engine("hbs", hbs.express4({
@@ -28,14 +36,9 @@ app.engine("hbs", hbs.express4({
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
-// Web page router.
-app.use("/", router);
 // REST API router.
 app.use("/api", api_router);
 
-// Register body-parser.
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
 
 app.listen(port, hostname, () => {
   console.log("Server listening on " + hostname + ":" + port + "!");

@@ -5,14 +5,17 @@
  */
 
 const router = require("express").Router();
-const userController = require("./userController.js");
-const postController;
+const userController = require("./controllers/userController.js");
+const postController = require("./controllers/postController");
 /**
  * User
  * 
  */
-
-router.post("/user", userController.
+router.get('/users', userController.index).
+  post('/users', userController.create).
+  get('/users/:id', userController.show).
+  put('/users/:id', userController.update).
+  delete('/users/:id', userController.destroy);
 
 /**
  * Post
@@ -40,3 +43,5 @@ router.post("/thread", (req, res) => {
 router.post("/permission", (req, res) => {
 
 });
+
+module.exports = router;

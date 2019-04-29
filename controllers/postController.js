@@ -4,6 +4,7 @@
  * Database controller for posts.
  */
 const Post = require("../model").Post;
+const validator = require('validator');
 
 exports.index = (req, res) => {
   Post.find({}, (err, post) => {

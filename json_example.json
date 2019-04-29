@@ -17,6 +17,13 @@
           "related": "http://localhost:3000/api/posts/1/author"
         },
         "data": { "type": "users", "id": "objectID" }
+      },
+      "thread": {
+        "links": {
+          "self": "http://localhost:3000/api/posts/1/relationships/thread",
+          "related":"http://localhost:3000/api/posts/1/thread"
+        },
+        "data": { "type": "threads", "id": "objectID" }
       }
     }
   }

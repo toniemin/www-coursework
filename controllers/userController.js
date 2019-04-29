@@ -4,60 +4,78 @@
  * Database controller for users.
  */
 
-const UserModel = require("../model").User;
+const User = require("../model").User;
 const bcrypt = require("bcryptjs");
 
-// Get all of the users in the database.
-exports.getAll = (req, res) => {
+exports.index = (req, res) => {
+  User.find({}, (err, users) => {
+    if (err) res.send(err);
 
-};
+    res.json(users);
+  });
+}
 
-// Read one user from the database.
-exports.getOne = (req, res) => {
+// Insert a new user to the database.
+exports.create = (req, res) => {
+  if (req.body == null) {
+    console.error(`Failed to add a user to the database. Request: ${req.body}`);
+    res.end(req.body.err);
+  }
 
-};
-
-// Insert a single user to the database.
-exports.insertOne = (req, res) => {
-  let username = req.body.name;
-  let password = req.body.password;
+  // Read request json.
+  let username = req.body.username;
   let email = req.body.email;
+  let password = req.body.password;
 
-  // Save password.
+  // Validate password length.
+  if (password.length < 8 || password.length > 40) {
+    res.end(`Failed to add a user to the database. Password length invalid.`);
+  }
+
+  // Encrypt the password.
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, (err, hash) => {
+      // Create a new user. Save only password's hash.
       let user = new User({
         username: username,
-        password: hash,
         email: email,
-        role: "unpaid",
-        days_to_payment = 0
+        password: hash
       });
+
+      console.log(`username: ${username}, email: ${email}, password: ${hash}`);
 
       // Save the user to the database.
       user.save((err, user) => {
-        if (err) return console.error(err);
-        console.log("New user \'", username, "\' has been added to the database.");
-      })
+        if (err) {
+          console.error(`Failed to add user to the database: ${err}`);
+          res.send(null);
+        }
+        
+        console.log(`Added new user (${user}) to the database!`);
+        res.json(user);
+      });
     });
   });
-};
+}
 
-// Delete ALL users from the database.
-exports.deleteAll = (req, res) => {
 
-};
+exports.show = (req, res) => {
+  User.findById(req.params.id, (err, user) => {
+    if (err) res.send(err);
+    res.json(user);
+  })
+}
 
-// Delete one user from the database.
-exports.deleteOne = (req, res) => {
+exports.update = (req, res) => {
+  User.findOneAndUpdate(req.params.id, (err, user) => {
+    if (err) res.send(err);
+    res.json(user);
+  });
+}
 
-};
-
-// Update one user in the database.
-exports.putOne = (req, res) => {
-
-};
-
-exports.authenticate = (req, res) => {
-
-};
+exports.destroy = (req, res) => {
+  User.deleteOne({_id: req.params.id }, (err, user) => {
+    if (err) res.send(err);
+    res.json({message: `User (${req.params.id}) was succesfully deleted.`});
+  });
+}
