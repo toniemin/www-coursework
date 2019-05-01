@@ -5,8 +5,10 @@
  */
 
 const router = require("express").Router();
-const userController = require("./controllers/userController.js");
+const userController = require("./controllers/userController.");
 const postController = require("./controllers/postController");
+const threadController = require("./controllers/threadController");
+const permissionController = require("./controllers/permissionController");
 /**
  * User
  * 
@@ -32,16 +34,20 @@ router.get('/posts', postController.index).
  * Thread
  * 
  */
-router.post("/thread", (req, res) => {
-
-});
+router.get('/thread', threadController.index).
+  post('/thread', threadController.create).
+  get('/thread/:id', threadController.show).
+  put('/thread/:id', threadController.update).
+  delete('/thread/:id', threadController.destroy);
 
 /**
  * Permission
  * 
  */
-router.post("/permission", (req, res) => {
-
-});
+router.get('/permission', permissionController.index).
+  post('/permission', permissionController.create).
+  get('/permission/:id', permissionController.show).
+  put('/permission/:id', permissionController.update).
+  delete('/permission/:id', permissionController.destroy);
 
 module.exports = router;

@@ -36,10 +36,20 @@ app.engine("hbs", hbs.express4({
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
+// TODO: REGISTER AUTHENTICATOR MIDDLEWARE.
+
 // REST API router.
 app.use("/api", api_router);
 
+// Adds an Admin user to the database as well as creates the permissions.
+function db_init() {
+  let permissionController
+}
+db_init();
 
 app.listen(port, hostname, () => {
+
+
+
   console.log("Server listening on " + hostname + ":" + port + "!");
 });

@@ -4,7 +4,6 @@
  * Database controller for posts.
  */
 const Post = require("../model").Post;
-const validator = require('validator');
 
 exports.index = (req, res) => {
   Post.find({}, (err, post) => {
@@ -39,6 +38,6 @@ exports.update = (req, res) => {
 exports.destroy = (req, res) => {
   Post.deleteOne({ _id: req.params.id }, (err, post) => {
     if (err) res.send(err);
-    res.json({ message: `Log entry (${req.params.id}) was successfully deleted,`});
+    res.json({ "message": `(${req.params.id}) was successfully deleted,`});
   });
 }

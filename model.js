@@ -22,6 +22,27 @@ db.once("open", () => {
 
 const ObjectId = Schema.Types.ObjectId;
 
+const flagSchema = new Schema({
+  name: {
+    type: String,
+    trim: true,
+    uppercase: true,
+    required: true
+  },
+  state: {
+    type: Boolean,
+    required: false,
+    default: false
+  },
+  description: {
+    type: String,
+    required: false,
+    default: "No description.",
+  }
+});
+
+const Flag = exports.Flag = mongoose.model("Flags", flagSchema);
+
 const postSchema = new Schema({
   user: {
     type: ObjectId,
@@ -72,7 +93,7 @@ const threadSchema = new Schema({
   }
 });
 
-const Thread = exports.ThreadModel = mongoose.model("Threads", threadSchema);
+const Thread = exports.Thread = mongoose.model("Threads", threadSchema);
 
 
 // Schema representing a user in the system.
