@@ -5,10 +5,10 @@
  */
 
 const router = require("express").Router();
-const userController = require("./controllers/userController.");
-const postController = require("./controllers/postController");
-const threadController = require("./controllers/threadController");
-const permissionController = require("./controllers/permissionController");
+const userController = require("../controllers/userController.");
+const postController = require("../controllers/postController");
+const threadController = require("../controllers/threadController");
+const permissionController = require("../controllers/permissionController");
 /**
  * User
  * 

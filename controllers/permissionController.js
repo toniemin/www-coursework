@@ -4,7 +4,7 @@
  * Database controller for permissions.
  */
 
-const Permission = require('../model').Permission;
+const Permission = require('../model/model').Permission;
 
 exports.index = (req, res) => {
   Permission.find({}, (err, permission) => {

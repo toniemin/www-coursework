@@ -4,11 +4,11 @@
  * Database controller for users.
  */
 
-const User = require("../model").User;
+const User = require("../model/model").User;
 const bcrypt = require("bcryptjs");
 
 exports.index = (req, res) => {
-  User.find({}, (err, users) => {
+  User.find({}, req.locals.allowed_attributes,(err, users) => {
     if (err) res.send(err);
 
     res.json(users);
@@ -60,14 +60,14 @@ exports.create = (req, res) => {
 
 
 exports.show = (req, res) => {
-  User.findById(req.params.id, (err, user) => {
+  User.findById(req.params.id, req.locals.allowed_attributes, (err, user) => {
     if (err) res.send(err);
     res.json(user);
   })
 }
 
 exports.update = (req, res) => {
-  User.findOneAndUpdate(req.params.id, (err, user) => {
+  User.findByIdAndUpdate(req.params.id, req.locals.allowed_attributes, (err, user) => {
     if (err) res.send(err);
     res.json(user);
   });

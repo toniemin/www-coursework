@@ -8,7 +8,7 @@
  * The exported arrays are for use of the authenticator middleware.
  */
 
-const Action = require("../model").Action;
+const Action = require("../model/model").Action;
 
 const unregistered_user_actions = exports.unregistered_user_actions = [
   readPermission,

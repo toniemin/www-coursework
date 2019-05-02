@@ -4,7 +4,7 @@
  * Database controller for threads.
  */
 
-const Thread = require('../model').Thread;
+const Thread = require("../model/model").Thread;
 
 exports.index = (req, res) => {
   Thread.find({}, (err, thread) => {

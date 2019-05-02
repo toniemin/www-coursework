@@ -123,10 +123,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8,
-    validate: function() {
-      return validator.isAscii(this.password);
-    }
+    minlength: 8
   },
   days_to_payment: {
     type: Number,
@@ -142,7 +139,9 @@ const User = exports.User = mongoose.model("Users", UserSchema);
 const permissionSchema = new Schema({
   level: {
     type: Number,
-    required: true
+    required: true,
+    max: 5,
+    min: 1
   },
   name: {
     type: String,

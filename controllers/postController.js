@@ -3,10 +3,10 @@
  * 
  * Database controller for posts.
  */
-const Post = require("../model").Post;
+const Post = require("../model/model").Post;
 
 exports.index = (req, res) => {
-  Post.find({}, (err, post) => {
+  Post.find(res.locals.query, (err, post) => {
     if (err) res.send(err);
 
     res.json(post);
@@ -14,7 +14,7 @@ exports.index = (req, res) => {
 }
 
 exports.create = (req, res) => {
-  const newPost = new Post(req.body);
+  const newPost = new Post(req.locals.query);
   newPost.save((err, post) => {
     if (err) res.send(err);
     res.json(post);
@@ -22,14 +22,14 @@ exports.create = (req, res) => {
 }
 
 exports.show = (req, res) => {
-  Post.findById(req.params.id, (err, post) => {
+  Post.findById(req.params.id, res.locals.query, (err, post) => {
     if (err) res.send(err);
     res.json(post);
   });
 }
 
 exports.update = (req, res) => {
-  Post.findOneAndUpdate({ _id: req.params.id}, req.body, {new: true}, (err, post) => {
+  Post.findOneAndUpdate({ _id: req.params.id}, req.locals.query, {new: true}, (err, post) => {
     if (err) res.send(err);
     res.json(post);
   });
