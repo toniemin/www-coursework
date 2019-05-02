@@ -108,7 +108,7 @@ const UserSchema = new Schema({
     maxlength: 30,
     trim: true
   },
-  permission_level: {
+  perm_lvl: {
     type: ObjectId,
     required: false,
     default: null
@@ -151,29 +151,10 @@ const permissionSchema = new Schema({
     maxlenght: 20
   },
   actions: {
-    type: [Action],
+    type: [String],
     required: true,
     default: null
   }
 });
 
 const Permission = exports.Permission = mongoose.model("Permissions", permissionSchema);
-
-const actionSchema = new Scema({
-  path: {
-    type: String,
-    required: true
-  },
-  verb: {
-    type: String,
-    required: true,
-    uppercase: true
-  },
-  attributes: {
-    type: [String],
-    default: ["All"],
-    required: false
-  }
-});
-
-const Action = exports.Action = mongoose.model("Actions", actionSchema);

@@ -14,8 +14,8 @@ const hbs = require("express-hbs");
 const helmet = require('helmet');
 
 // Routers for hbs web templates and the REST API.
-const router = require("./router");
-const api_router = require("./api_router.js");
+const router = require("./routers/router");
+const api_router = require("./routers/api_router.js");
 
 const hostname = "0.0.0.0";
 const port = 3000;
@@ -41,15 +41,6 @@ app.set("views", __dirname + "/views");
 // REST API router.
 app.use("/api", api_router);
 
-// Adds an Admin user to the database as well as creates the permissions.
-function db_init() {
-  let permissionController
-}
-db_init();
-
 app.listen(port, hostname, () => {
-
-
-
   console.log("Server listening on " + hostname + ":" + port + "!");
 });
