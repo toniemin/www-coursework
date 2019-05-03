@@ -22,27 +22,6 @@ db.once("open", () => {
 
 const ObjectId = Schema.Types.ObjectId;
 
-const flagSchema = new Schema({
-  name: {
-    type: String,
-    trim: true,
-    uppercase: true,
-    required: true
-  },
-  state: {
-    type: Boolean,
-    required: false,
-    default: false
-  },
-  description: {
-    type: String,
-    required: false,
-    default: "No description.",
-  }
-});
-
-const Flag = exports.Flag = mongoose.model("Flags", flagSchema);
-
 const postSchema = new Schema({
   user: {
     type: ObjectId,
@@ -136,29 +115,7 @@ const UserSchema = new Schema({
 
 const User = exports.User = mongoose.model("Users", UserSchema);
 
-const permissionSchema = new Schema({
-  level: {
-    type: Number,
-    required: true,
-    max: 5,
-    min: 1
-  },
-  name: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlenght: 20
-  },
-  actions: {
-    type: [Action],
-    required: true,
-    default: null
-  }
-});
-
-const Permission = exports.Permission = mongoose.model("Permissions", permissionSchema);
-
-const actionSchema = new Scema({
+const actionSchema = new Schema({
   path: {
     type: String,
     required: true
@@ -176,3 +133,25 @@ const actionSchema = new Scema({
 });
 
 const Action = exports.Action = mongoose.model("Actions", actionSchema);
+
+const permissionSchema = new Schema({
+  level: {
+    type: Number,
+    required: true,
+    max: 5,
+    min: 1
+  },
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlenght: 20
+  },
+  actions: {
+    type: [actionSchema],
+    required: true,
+    default: null
+  }
+});
+
+const Permission = exports.Permission = mongoose.model("Permissions", permissionSchema);

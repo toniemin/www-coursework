@@ -1,20 +1,3 @@
-/**
- * WWW Programming 2019 - Coursework - Discussion forum.
- * 
- * Permission list of the REST API. This file contains all the actions
- * currently operable on the REST API (through http). The actions are
- * defined in model.js.
- * 
- * The exported arrays are for use of the authenticator middleware.
- */
-
-const Action = require("../model/model").Action;
-
-
-/*
- * Threads.
- *
- */
 const readThreadBasic = {
   path: "/api/threads/",
   verb: "GET",
@@ -31,10 +14,6 @@ const createThread = {
   verb: "POST"
 };
 
-/*
- * Posts.
- *
- */
 const readPost = {
   path: "/api/posts",
   verb: "GET"
@@ -50,10 +29,6 @@ const deletePost = {
   verb: "DELETE"
 };
 
-/*
- * Users.
- *
- */
 const readUserBasic = {
   path: "/api/users",
   verb: "GET",
@@ -93,53 +68,8 @@ const deleteUser = {
   path: "/api/users",
   verb: "DELETE"
 };
-/*
-* Permissions.
-*
-*/
+
 const readPermission = {
   path: "/api/permissions",
   verb: "GET"
 };
-
-
-exports.unregistered_user_actions = [
-  readPermission,
-  readThreadBasic,
-  createUser
-];
-
-exports.unpaid_member_actions = [
-  readPermission,
-  readThread,
-  readPost,
-  readUserBasic
-];
-
-exports.member_actions = 
-exports.unpaid_member_actions.concat(
-  [createThread, createPost]
-);
-
-exports.moderator_actions = [
-  readPermission,
-  readThread,
-  createThread,
-  readPost,
-  createPost,
-  deletePost,
-  readUserMod,
-  updateUserMod
-];
-
-exports.administator_actions = [
-  readPermission,
-  readThread,
-  createThread,
-  readPost,
-  createPost,
-  deletePost,
-  readUserAdmin,
-  updateUserAdmin,
-  deleteUser
-];

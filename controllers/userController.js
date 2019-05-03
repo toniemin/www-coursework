@@ -8,7 +8,7 @@ const User = require("../model/model").User;
 const bcrypt = require("bcryptjs");
 
 exports.index = (req, res) => {
-  User.find({}, req.locals.allowed_attributes,(err, users) => {
+  User.find({}, res.locals.query,(err, users) => {
     if (err) res.send(err);
 
     res.json(users);
@@ -23,9 +23,9 @@ exports.create = (req, res) => {
   }
 
   // Read request json.
-  let username = req.body.username;
-  let email = req.body.email;
-  let password = req.body.password;
+  let username = res.locals.query.username;
+  let email = req.locals.query.email;
+  let password = req.locals.query.password;
 
   // Validate password length.
   if (password.length < 8 || password.length > 40) {
@@ -60,14 +60,14 @@ exports.create = (req, res) => {
 
 
 exports.show = (req, res) => {
-  User.findById(req.params.id, req.locals.allowed_attributes, (err, user) => {
+  User.findById(req.params.id, res.locals.query, (err, user) => {
     if (err) res.send(err);
     res.json(user);
-  })
+  });
 }
 
 exports.update = (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.locals.allowed_attributes, (err, user) => {
+  User.findByIdAndUpdate(req.params.id, res.locals.query, (err, user) => {
     if (err) res.send(err);
     res.json(user);
   });

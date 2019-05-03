@@ -12,6 +12,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const hbs = require("express-hbs");
 const helmet = require('helmet');
+const authenticator = require("./user-control/authentication").verifyToken;
 
 // Routers for hbs web templates and the REST API.
 const router = require("./routers/router");
@@ -36,7 +37,8 @@ app.engine("hbs", hbs.express4({
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
-// TODO: REGISTER AUTHENTICATOR MIDDLEWARE.
+// Register authentication middleware.
+app.use(authenticator);
 
 // REST API router.
 app.use("/api", api_router);
