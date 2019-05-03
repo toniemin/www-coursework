@@ -26,57 +26,57 @@ http.createServer((req, res) => {
     console.log(`Loading permission list from file...`);
 
     // Load JSON file with the action objects.
-    let rawData = fs.readFileSync("permissions.json");
+    let rawData = fs.readFileSync("permissions.json", {encoding: "UTF-8"});
     let permissions = JSON.parse(rawData);
 
     console.log(`Creating permission lists...`);
 
     console.log(`WTF actual fuck part 1: ${permissions}`);
 
-    createPermission(1, "unreg", permissions["unregistered_user_actions"]);
-    createPermission(2, "unpaid", permissions["unpaid_member_actions"]);
-    createPermission(3, "member", permissions["member_actions"]);
-    createPermission(4, "mod", permissions["moderator_actions"]);
-    createPermission(5, "admin", permissions["administrator_actions"]);
+//     createPermission(1, "unreg", permissions["unregistered_user_actions"]);
+//     createPermission(2, "unpaid", permissions["unpaid_member_actions"]);
+//     createPermission(3, "member", permissions["member_actions"]);
+//     createPermission(4, "mod", permissions["moderator_actions"]);
+//     createPermission(5, "admin", permissions["administrator_actions"]);
 
-    console.log(`Permission lists created. Creating admin user...`);
+//     console.log(`Permission lists created. Creating admin user...`);
 
-    // Fetch admin permissions.
-    Permission.findOne({ name: "admin" }, (err, permission) => {
-      if (err) console.error(err);
+//     // Fetch admin permissions.
+//     Permission.findOne({ name: "admin" }, (err, permission) => {
+//       if (err) console.error(err);
 
-      let admin = new User({
-        username: "admin",
-        permission_level: permission._id,
-        email: "admin@admin.com",
-        password: "12345678",
-        days_to_payment: 30
-      });
+//       let admin = new User({
+//         username: "admin",
+//         permission_level: permission._id,
+//         email: "admin@admin.com",
+//         password: "12345678",
+//         days_to_payment: 30
+//       });
 
-      admin.save((err, admin) => {
-        if (err) console.error(err);
+//       admin.save((err, admin) => {
+//         if (err) console.error(err);
 
-        console.log(`Admin user created with credentials 
-      (username:password): admin:12345678. The database initializion has now finished.`);
-      });
-    });
+//         console.log(`Admin user created with credentials 
+//       (username:password): admin:12345678. The database initializion has now finished.`);
+//       });
+//     });
   });
 
-function createPermission(level, name, actions) {
-  console.log(`WTF is wrong with my actions??? actions: ${actions}`)
-  Action.insertMany(actions, (err, docs) => {
-    if (err) {
-      console.error(err);
-    }
-    let permission = new Permission({
-      level: level,
-      name: name,
-      actions: docs
-    });
-    permission.save((err, permission) => {
-      if (err) console.error(err);
+// function createPermission(level, name, actions) {
+//   console.log(`WTF is wrong with my actions??? actions: ${actions}`)
+//   Action.insertMany(actions, (err, docs) => {
+//     if (err) {
+//       console.error(err);
+//     }
+//     let permission = new Permission({
+//       level: level,
+//       name: name,
+//       actions: docs
+//     });
+//     permission.save((err, permission) => {
+//       if (err) console.error(err);
 
-      console.log(`Permission "${permission.name}" added to the database`);
-    });
-  });
-}
+//       console.log(`Permission "${permission.name}" added to the database`);
+//     });
+//   });
+// }
