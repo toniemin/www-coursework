@@ -1,0 +1,132 @@
+{
+	"unregistered_user_actions": [{
+			"path": "/api/permissions",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/threads",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/users",
+			"verb": "POST",
+			"attributes": ["username", "email", "password"]
+		}
+	],
+	"unpaid_member_actions": [{
+			"path": "/api/permissions",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/threads",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/users",
+			"verb": "GET",
+			"attributes": ["username", "permission_level"]
+		}
+	],
+	"member_actions": [{
+			"path": "/api/permissions",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/threads",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/users",
+			"verb": "GET",
+			"attributes": ["username", "permission_level"]
+		},
+		{
+			"path": "/api/threads",
+			"verb": "POST"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "POST"
+		}
+	],
+	"moderator_actions": [{
+			"path": "/api/permissions",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/threads",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/threads",
+			"verb": "POST"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "POST"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "DELETE"
+		},
+		{
+			"path": "/api/users",
+			"verb": "GET",
+			"attributes": ["email", "days_to_payment"]
+		},
+		{
+			"path": "/api/users",
+			"verb": "PUT",
+			"attributes": ["days_to_payment"]
+		}
+	],
+	"administator_actions": [{
+			"path": "/api/permissions",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/threads",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/threads",
+			"verb": "POST"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "POST"
+		},
+		{
+			"path": "/api/posts",
+			"verb": "DELETE"
+		},
+		{
+			"path": "/api/users",
+			"verb": "GET"
+		},
+		{
+			"path": "/api/users",
+			"verb": "PUT"
+		},
+		{
+			"path": "/api/users",
+			"verb": "DELETE"
+		}
+	]
+}

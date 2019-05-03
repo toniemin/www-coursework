@@ -19,21 +19,23 @@ http.createServer((req, res) => {
   res.statusCode = 200;
   res.setHeader("Content-Type", "text/plain");
   res.end("Database initialization started!");
+
+  console.log(`Initializing database. Please stand by...`);
 }).
   listen(port, hostname, () => {
-    console.log(`Initializing database. Please stand by...`);
-
     console.log(`Loading permission list from file...`);
 
     // Load JSON file with the action objects.
-    let rawData = fs.readFileSync("permissions.json", {encoding: "UTF-8"});
+    let rawData = fs.readFileSync("permissions_2.json", {encoding: "UTF-8"});
     let permissions = JSON.parse(rawData);
 
     console.log(`Creating permission lists...`);
 
-    console.log(`WTF actual fuck part 1: ${permissions}`);
+    //console.log(`${JSON.stringify(permissions["unregistered_user_actions"])}`);
 
-//     createPermission(1, "unreg", permissions["unregistered_user_actions"]);
+    //console.log(`What the actual fuck part 1: ${JSON.stringify(permissions)}`);
+
+     createPermission(1, "unreg", JSON.parse(permissions["unregistered_user_actions"]));
 //     createPermission(2, "unpaid", permissions["unpaid_member_actions"]);
 //     createPermission(3, "member", permissions["member_actions"]);
 //     createPermission(4, "mod", permissions["moderator_actions"]);
@@ -62,21 +64,21 @@ http.createServer((req, res) => {
 //     });
   });
 
-// function createPermission(level, name, actions) {
-//   console.log(`WTF is wrong with my actions??? actions: ${actions}`)
-//   Action.insertMany(actions, (err, docs) => {
-//     if (err) {
-//       console.error(err);
-//     }
-//     let permission = new Permission({
-//       level: level,
-//       name: name,
-//       actions: docs
-//     });
-//     permission.save((err, permission) => {
-//       if (err) console.error(err);
+function createPermission(level, name, actions) {
+  console.log(`WTF is wrong with my actions??? actions: ${actions}`)
+  Action.insertMany(actions, (err, docs) => {
+    if (err) {
+      console.error(err);
+    }
+    let permission = new Permission({
+      level: level,
+      name: name,
+      actions: docs
+    });
+    permission.save((err, permission) => {
+      if (err) console.error(err);
 
-//       console.log(`Permission "${permission.name}" added to the database`);
-//     });
-//   });
-// }
+      console.log(`Permission "${permission.name}" added to the database`);
+    });
+  });
+}
