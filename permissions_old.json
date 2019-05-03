@@ -1,4 +1,4 @@
-{
+[{
 	"unregistered_user_actions": [{
 			"path": "/api/permissions",
 			"verb": "GET"
@@ -12,7 +12,8 @@
 			"verb": "POST",
 			"attributes": ["username", "email", "password"]
 		}
-	],
+	]
+}, {
 	"unpaid_member_actions": [{
 			"path": "/api/permissions",
 			"verb": "GET"
@@ -30,7 +31,8 @@
 			"verb": "GET",
 			"attributes": ["username", "permission_level"]
 		}
-	],
+	]
+}, {
 	"member_actions": [{
 			"path": "/api/permissions",
 			"verb": "GET"
@@ -56,7 +58,8 @@
 			"path": "/api/posts",
 			"verb": "POST"
 		}
-	],
+	]
+}, {
 	"moderator_actions": [{
 			"path": "/api/permissions",
 			"verb": "GET"
@@ -91,8 +94,9 @@
 			"verb": "PUT",
 			"attributes": ["days_to_payment"]
 		}
-	],
-	"administrator_actions": [{
+	]
+}, {
+	"administator_actions": [{
 			"path": "/api/permissions",
 			"verb": "GET"
 		},
@@ -129,4 +133,4 @@
 			"verb": "DELETE"
 		}
 	]
-}
+}]
