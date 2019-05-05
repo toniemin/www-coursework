@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
   </head>
   <body>
-    <h1>Bingo forums</h1>
-    <p>
-      <a href="/login">Log in</a> 
-      &#124; 
-      <a href="/register">Register</a>
-    </p>
-    <h2>Newest discussions</h2>
-    {{!
-      * FETCH HEADLINES FROM DB HERE */
-    }}
-    <p>No recent discussions.</p>
+    <h1>Discussion forums</h1>
+    {{#if ! userLoggedin}}
+      <p>
+        <a href="/login">Sign in</a>
+        |
+        <a href="/register"></a></p>
+    {{/if}}
+    {{#else}}
+      <h2>Actions</h2>
+      {{#each actions}}
+        action.name
+      {{/each}}
+    {{/else}}
+    <h2>Recent discussions</h2>
+    {{#each discussion}}
+      {{Link if logged in}}
+    {{/each}}
   </body>
 </html>
