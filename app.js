@@ -2,9 +2,7 @@
  * WWW Programming 2019 - Coursework - Discussion forum.
  * 
  * Main file of the application. This application implements a simple discussion forum site.
- * The site uses a simple REST API for all the data. The application uses the MongodDB,
- * Express, React (+ Redux) and Node framework stack. The app uses a html template engine as an 
- * option to React. The app uses MVC structure.
+ * The site uses a simple REST API for all the data. The app uses MVC structure.
  */
 
 const express = require("express");
@@ -12,11 +10,11 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const hbs = require("express-handlebars");
 const helmet = require('helmet');
-const authenticator = require("./user-control/authentication").verifyToken;
+const authenticator = require("./access-control/authentication").verifyToken;
 
 // Routers for hbs web templates and the REST API.
-const router = require("./routes/router");
-const api_router = require("./routes/api_router.js");
+const router = require("./routes/index");
+const api_router = require("./routes/api_router");
 
 const hostname = "0.0.0.0";
 const port = 3000;
@@ -40,8 +38,10 @@ app.engine("hbs", hbs({
   partialsDir: __dirname + "/views/partials"
 }));
 
+app.use("/", router);
+
 // Register authentication middleware.
-app.use(authenticator);
+app.use("/api", authenticator);
 
 // REST API router.
 app.use("/api", api_router);

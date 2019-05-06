@@ -6,6 +6,8 @@
 const Post = require("../model/model").Post;
 
 exports.index = (req, res) => {
+  if (typeof req.body === "undefined")
+
   Post.find(res.locals.query, (err, post) => {
     if (err) res.send(err);
 
@@ -14,7 +16,7 @@ exports.index = (req, res) => {
 }
 
 exports.create = (req, res) => {
-  const newPost = new Post(req.locals.query);
+  const newPost = new Post(req.body);
   newPost.save((err, post) => {
     if (err) res.send(err);
     res.json(post);
@@ -22,14 +24,14 @@ exports.create = (req, res) => {
 }
 
 exports.show = (req, res) => {
-  Post.findById(req.params.id, res.locals.query, (err, post) => {
+  Post.findById(req.params.id, req.body, (err, post) => {
     if (err) res.send(err);
     res.json(post);
   });
 }
 
 exports.update = (req, res) => {
-  Post.findOneAndUpdate({ _id: req.params.id}, req.locals.query, {new: true}, (err, post) => {
+  Post.findOneAndUpdate({ _id: req.params.id}, req.body, {new: true}, (err, post) => {
     if (err) res.send(err);
     res.json(post);
   });

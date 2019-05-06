@@ -7,7 +7,11 @@
 const Thread = require("../model/model").Thread;
 
 exports.index = (req, res) => {
-  Thread.find({}, (err, thread) => {
+  if (typeof req.body === "undefined") {
+    req.body = {};
+  }
+
+  Thread.find(req.body, (err, thread) => {
     if (err) res.send(err);
 
     res.json(thread);
@@ -31,7 +35,7 @@ exports.show = (req, res) => {
 }
 
 exports.update = (req, res) => {
-  Thread.findOneAndUpdate({ _id: req.params.id}, req.body, {new: true}, (err, thread) => {
+  Thread.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, thread) => {
     if (err) res.send(err);
     res.json(thread);
   });
@@ -40,6 +44,6 @@ exports.update = (req, res) => {
 exports.destroy = (req, res) => {
   Thread.deleteOne({ _id: req.params.id }, (err, thread) => {
     if (err) res.send(err);
-    res.json({ "message": `(${req.params.id}) was successfully deleted.`})
+    res.json({ "message": `(${req.params.id}) was successfully deleted.` })
   });
 }

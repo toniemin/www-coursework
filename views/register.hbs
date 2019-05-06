@@ -8,21 +8,64 @@
 <body>
   <h1>Bingo forums</h1>
   <h2>Register</h2>
-  <form method="POST" action="/handler2.js">
+  <form id="register_form">
     <label for="username">Username: </label>
-    <input type="text" , name="username">
+    <input id="username" type="text" , name="username">
     <br>
     <label for="email">Email: </label>
-    <input type="text" , name="email">
+    <input id="email" type="text" , name="email">
     <br>
     <label for="password">Password: </label>
-    <input type="password" , name="password">
+    <input id="password" type="password" , name="password">
     <br>
     <label for="confpassword">Confirm password: </label>
-    <input type="password" , name="confpassword">
+    <input id="confirm_password" type="password" , name="confpassword">
     <br>
     <input type="submit" value="Register">
   </form>
+  <p id="output"></p>
+  <script>
+    function sendData() {
+      if (document.getElementById("password").value === document.getElementById("confirm_password")) {
+        
+        return;
+      }
+
+      // Read data from the form fields.
+      let data = {
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+
+      }
+
+      fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        if (response.ok) {
+          response.json().then(function (data) {
+            localStorage.setItem("access_token", data["token"]);
+          });
+        }
+        else {
+          let output = document.getElementById("output")
+          output.textContent = "Invalid login";
+        }
+      });
+    }
+
+    window.onload = function () {
+      let form = document.getElementById("register_form");
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        sendData();
+      });
+    }
+  </script>
 </body>
 
 </html>

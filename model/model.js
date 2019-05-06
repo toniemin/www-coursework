@@ -25,6 +25,7 @@ const ObjectId = Schema.Types.ObjectId;
 const postSchema = new Schema({
   user: {
     type: ObjectId,
+    ref: "User",
     required: true
   },
   createdAt: {
@@ -52,6 +53,7 @@ const Post = exports.Post = mongoose.model("Posts", postSchema);
 const threadSchema = new Schema({
   user: {
     type: ObjectId,
+    ref: "User",
     required: true
   },
   createdAt: {
@@ -89,6 +91,7 @@ const UserSchema = new Schema({
   },
   permission_level: {
     type: ObjectId,
+    ref: "Permission",
     required: false,
     default: null
   },

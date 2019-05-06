@@ -7,7 +7,11 @@
 const Permission = require('../model/model').Permission;
 
 exports.index = (req, res) => {
-  Permission.find({}, (err, permission) => {
+  if (typeof req.body === "undefined") {
+    req.body = {};
+  }
+
+  Permission.find(req.body, (err, permission) => {
     if (err) res.send(err);
 
     res.json(permission);
