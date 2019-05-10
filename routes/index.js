@@ -10,6 +10,8 @@ const loginController = require("../access-control/authentication").login;
 const userController = require("../controllers/userController");
 
 router.get("/", (req, res) => {
+  req.loca
+
   res.render("index", {
     userLoggedIn: false,
     actions: null,
