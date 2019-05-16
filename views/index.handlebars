@@ -1,0 +1,29 @@
+<h1>Discussion forums</h1>
+{{#unless userLoggedIn}}
+<p>
+  <a href="/login">Sign in</a>
+  |
+  <a href="/register">Register</a>
+</p>
+{{/unless}}
+{{!-- 
+{{#if userLoggedIn}}
+<h2>Actions</h2>
+<ul>
+  {{#each actions}}
+  <li><a href=this.link>this.name</a></li>
+  {{/each}}
+</ul>
+{{/if}}
+<h2>Recent discussions</h2>
+{{#unless userLoggedIn}}
+<p>Note: You can view the discussions only when logged in.</p>
+{{/unless}}
+<ul>
+  {{#each headlines}}
+  <li><a href=this.link>this.name</a></li>
+  {{else}}
+  <p>No recent discussions.</p>
+  {{/each}}
+</ul>
+--}}

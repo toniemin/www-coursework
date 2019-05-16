@@ -6,11 +6,17 @@
  */
 
 const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const hbs = require("express-handlebars");
 const helmet = require('helmet');
+
+const bodyParser = require("body-parser");
 const authenticator = require("./access-control/authentication").verifyToken;
+
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+const db_connection = require("./model/model").db_connection;
+
+const hbs = require("express-handlebars");
+
 
 // Routers for hbs web templates and the REST API.
 const router = require("./routes/index");
@@ -28,15 +34,19 @@ app.use(helmet());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-// Set up template engine.
-app.set("view engine", "hbs");
-
-app.engine("hbs", hbs({
-  extname: "hbs",
-  defaultView: "default",
-  layoutsDir: __dirname + "/views/pages",
-  partialsDir: __dirname + "/views/partials"
+// Register session handler.
+app.use(session({
+  secret: "sample text",
+  store: new MongoStore( { mongooseConnection: db_connection }),
+  resave: false,
+  saveUninitialized: true
 }));
+
+// Set up template engine.
+app.engine("handlebars", hbs({
+  defaultLayout: "default"
+}));
+app.set("view engine", "handlebars");
 
 app.use("/", router);
 

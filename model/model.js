@@ -13,7 +13,7 @@ const port = 3000; // IMPORT PORT NUMBER
 
 mongoose.connect(`mongodb://localhost/forums`, {useNewUrlParser: true});
 
-const db = mongoose.connection;
+const db = exports.db_connection = mongoose.connection;
 
 db.on("error", console.error.bind(console, "Database connection error"));
 db.once("open", () => {
