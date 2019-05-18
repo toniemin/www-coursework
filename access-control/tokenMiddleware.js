@@ -1,10 +1,6 @@
 
-
-const jwt = require("jsonwebtoken");
-const User = require("../model/model").User;
 const Permission = require("../model/model").Permission;
-const bcrypt = require("bcryptjs");
-
+const jwt = require("jsonwebtoken");
 
 const verifyToken = exports.verifyToken = (req, res, next) => {
   if (req.path === "/") next();
@@ -73,59 +69,6 @@ const verifyToken = exports.verifyToken = (req, res, next) => {
 
       req.body = requestObject;
       next();
-    });
-  });
-}
-
-const login = exports.login = (req, res, next) => {
-  // Load user credentials.
-  let username = req.body.username;
-  let password = req.body.password;
-
-  if (typeof username === "undefined" || username === null || username === "") {
-    // DENY LOGIN. FORWARD TO FAILED LOGIN PAGE.
-    res.sendStatus(400);
-    return;
-  }
-
-  if (password === "undefined" || password === null || password == "") {
-    // DENY LOGIN. FORWARD TO FAILED LOGIN PAGE.
-    res.sendStatus(400);
-    return;
-  }
-
-  console.log(`Username: ${username}`)
-  User.findOne({ username: username }, (err, user) => {
-    if (user === null) {
-      res.sendStatus(400);
-      return;
-    }
-
-    bcrypt.compare(password, user.password, (err, result) => {
-      if (err) {
-        res.sendStatus(500);
-        console.error(err);
-        return;
-      }
-      if (!result) {
-        res.sendStatus(401);
-        console.error(err);
-        return;
-      }
-
-      let payload = {
-        permission_level: user.permission_level
-      };
-
-      jwt.sign(payload, "verySecretKey", {expiresIn: "30m"}, (err, token) => {
-        if (err) {
-          res.sendStatus(500);
-          console.error(err);
-          return;
-        }
-
-        res.json({ token });
-      });
     });
   });
 }

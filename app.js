@@ -9,13 +9,15 @@ const express = require("express");
 const helmet = require('helmet');
 
 const bodyParser = require("body-parser");
-const authenticator = require("./access-control/authentication").verifyToken;
+const tokenVerifier = require("./access-control/tokenMiddleware").verifyToken;
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const db_connection = require("./model/model").db_connection;
 
-const hbs = require("express-handlebars");
+const exhbs = require("express-handlebars");
+
+const indexActionList = require("./views/helper").indexActionList;
 
 
 // Routers for hbs web templates and the REST API.
@@ -36,22 +38,27 @@ app.use(bodyParser.json());
 
 // Register session handler.
 app.use(session({
-  secret: "sample text",
+  secret: "sampleText",
   store: new MongoStore( { mongooseConnection: db_connection }),
   resave: false,
   saveUninitialized: true
 }));
 
 // Set up template engine.
-app.engine("handlebars", hbs({
-  defaultLayout: "default"
-}));
+const hbs = exhbs.create({
+  defaultLayout: "default",
+  helpers: {
+    indexActionList
+  }
+});
+
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 app.use("/", router);
 
 // Register authentication middleware.
-app.use("/api", authenticator);
+app.use("/api", tokenVerifier);
 
 // REST API router.
 app.use("/api", api_router);

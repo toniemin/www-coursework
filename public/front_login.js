@@ -31,7 +31,8 @@ function sendData() {
         localStorage.setItem("access_token", data["token"]);
 
         // Save the fact that user logged in to a cookie.
-        document.cookie = "logged-in=true";
+        // JWT expires in 30 mins and so will this cookie.
+        document.cookie = "logged-in=true; max-age=1800";
   
         setTimeout(function() {
           window.location.href = "http://localhost:3000/";

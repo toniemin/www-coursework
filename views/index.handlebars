@@ -5,8 +5,24 @@
   |
   <a href="/register">Register</a>
 </p>
+{{else}}
+<p>
+  <a href="/logout">Logout</a>
+</p>
 {{/unless}}
+
 {{!-- 
+{{#each threadList as |text path|}}
+  <li>
+    {{#if userLoggedIn}}
+      <a href={{path}}>
+    {{/if}}
+    {{text}}
+    {{#if userLoggedIn}}
+    </a>
+    {{/else}}
+  </li>
+{{/each}}
 {{#if userLoggedIn}}
 <h2>Actions</h2>
 <ul>
@@ -19,11 +35,5 @@
 {{#unless userLoggedIn}}
 <p>Note: You can view the discussions only when logged in.</p>
 {{/unless}}
-<ul>
-  {{#each headlines}}
-  <li><a href=this.link>this.name</a></li>
-  {{else}}
-  <p>No recent discussions.</p>
-  {{/each}}
-</ul>
 --}}
+<script src={{script}}></script>

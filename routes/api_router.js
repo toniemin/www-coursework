@@ -34,20 +34,20 @@ router.get('/posts', postController.index).
  * Thread
  * 
  */
-router.get('/thread', threadController.index).
-  post('/thread', threadController.create).
-  get('/thread/:id', threadController.show).
-  put('/thread/:id', threadController.update).
-  delete('/thread/:id', threadController.destroy);
+router.get('/threads', threadController.index).
+  post('/threads', threadController.create).
+  get('/threads/:id', threadController.show).
+  put('/threads/:id', threadController.update).
+  delete('/threads/:id', threadController.destroy);
 
 /**
  * Permission
  * 
  */
-router.get('/permission', permissionController.index).
-  post('/permission', permissionController.create).
-  get('/permission/:id', permissionController.show).
-  put('/permission/:id', permissionController.update).
-  delete('/permission/:id', permissionController.destroy);
+router.get('/permissions', permissionController.index).
+  post('/permissions', permissionController.create).
+  get('/permissions/:id', permissionController.show).
+  put('/permissions/:id', permissionController.update).
+  delete('/permissions/:id', permissionController.destroy);
 
 module.exports = router;
