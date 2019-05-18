@@ -3,8 +3,6 @@ function sendData() {
   // Reference to output on the state of the login.
   let output = document.getElementById("output");
 
-  console.log("hoply shit");
-
   // Read data from the form fields.
   let formData = {
     username: document.getElementById("username").value,

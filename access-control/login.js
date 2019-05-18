@@ -2,6 +2,7 @@
 
 const jwt = require("jsonwebtoken");
 const User = require("../model/model").User;
+const Permission = require("../model/model").Permission;
 const bcrypt = require("bcryptjs");
 
 // /login route handler. Logs the user in if username 
@@ -46,19 +47,26 @@ const login = exports.login = (req, res, next) => {
       // Register session with username.
       req.session.username = username;
 
-      // Prepare JWT token and send it.
-      let payload = {
-        permission_level: user.permission_level
-      };
+      // Find user's role and save it to session.
+      Permission.findById(user.permission_level, (err, permission) => {
+        if (err) throw err;
 
-      jwt.sign(payload, "verySecretKey", {expiresIn: "30m"}, (err, token) => {
-        if (err) {
-          res.sendStatus(500);
-          console.error(err);
-          return;
-        }
+        req.session.role = permission.name;
 
-        res.json({ token });
+        // Prepare JWT token and send it.
+        let payload = {
+          permission_level: user.permission_level
+        };
+
+        jwt.sign(payload, "verySecretKey", { expiresIn: "30m" }, (err, token) => {
+          if (err) {
+            res.sendStatus(500);
+            console.error(err);
+            return;
+          }
+
+          res.json({ token });
+        });
       });
     });
   });

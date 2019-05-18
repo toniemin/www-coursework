@@ -19,12 +19,13 @@ function threadHeadlines(threadsOutput) {
   });
 }
 
-function () {
-  
-}
-
 window.onload = function (event) {
   let threadsOutput = document.getElementById("threadsOutput");
 
   threadHeadlines(threadsOutput);
 }
+
+function main() {
+  
+}
+main();

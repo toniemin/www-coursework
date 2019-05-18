@@ -6,15 +6,11 @@ const indexActionList = exports.indexActionList = (isLoggedIn, isMember, isModer
   
   if (isLoggedIn) {
     output += "<h2>Actions</h2>";
-  }
-
-  output += "<ul>";
-
-  if (isLoggedIn) {
+    output += "<ul>";
     output += createActionLink("settings", "User settings");
   }
 
-  if (isMember) {
+  if (isMember || isModerator) {
     output += createActionLink("createThread", "Create a new thread");
   }
 
@@ -22,9 +18,13 @@ const indexActionList = exports.indexActionList = (isLoggedIn, isMember, isModer
     output += createActionLink("listUsers", "List all users");
   }
 
+  if (isLoggedIn) {
+    output += "</ul>";
+  }
+
   return output;
 }
 
 function createActionLink(path, name) {
-  return "<li><a href=\"/"+path+"settings\">"+name+"</a></li>";
+  return "<li><a href=\"/"+path+"\">"+name+"</a></li>";
 }

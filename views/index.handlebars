@@ -11,29 +11,20 @@
 </p>
 {{/unless}}
 
-{{!-- 
-{{#each threadList as |text path|}}
-  <li>
-    {{#if userLoggedIn}}
-      <a href={{path}}>
-    {{/if}}
-    {{text}}
-    {{#if userLoggedIn}}
-    </a>
-    {{/else}}
-  </li>
+{{{indexActionList userLoggedIn isUserMember isUserMod}}}
+
+<h2>Recent threads</h2>
+{{#each threads}}
+<li>
+  <a href="http://sample.com">
+
+    {{this.title}}
+
+  </a>
+
+  | {{this.createdAt}} | by {{this.user}}
+</li>
+
+{{else}}
+<p>No recent discussions.</p>
 {{/each}}
-{{#if userLoggedIn}}
-<h2>Actions</h2>
-<ul>
-  {{#each actions}}
-  <li><a href=this.link>this.name</a></li>
-  {{/each}}
-</ul>
-{{/if}}
-<h2>Recent discussions</h2>
-{{#unless userLoggedIn}}
-<p>Note: You can view the discussions only when logged in.</p>
-{{/unless}}
---}}
-<script src={{script}}></script>
