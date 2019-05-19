@@ -1,0 +1,28 @@
+<h2>All users</h2>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Role</th>
+    <th>Days to payment</th>
+    <th>Actions</th>
+  </tr>
+  {{#each users}}
+  <tr>
+    <th>{{this._id}}</th>
+    <th>{{this.username}}</th>
+    <th>{{this.email}}</th>
+    <th>{{this.role}}</th>
+    <th>{{this.days_to_payment}}</th>
+    <th>
+      <input type="hidden" id="user-id" value={{this._id}} >
+      <input type="button" value="Ban" id={{this._id}}"-ban-btn" />
+      {{#if isAdmin}}
+        <input type="button" value="Delete" id={{this._id}}"-del-btn" />
+      {{/if}}
+    </th>
+  </tr>
+  {{/each}}
+</table>
+<script src={{script}}></script>
