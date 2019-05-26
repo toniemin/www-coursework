@@ -1,4 +1,5 @@
 <h2>All users</h2>
+<p id="output"></p>
 <table>
   <tr>
     <th>ID</th>
@@ -13,14 +14,25 @@
     <th>{{this._id}}</th>
     <th>{{this.username}}</th>
     <th>{{this.email}}</th>
-    <th>{{this.role}}</th>
+    <th class="role">{{this.permission_level}}</th>
     <th>{{this.days_to_payment}}</th>
     <th>
-      <input type="hidden" id="user-id" value={{this._id}} >
-      <input type="button" value="Ban" id={{this._id}}"-ban-btn" />
-      {{#if isAdmin}}
-        <input type="button" value="Delete" id={{this._id}}"-del-btn" />
-      {{/if}}
+      <form id="{{this._id}}">
+        <input type="hidden" id="user-id">
+        <input type="button" value="Ban" />
+        {{#unless isAdmin}}
+        <input type="button" value="Delete" />
+        {{/unless}}
+        {{#unless isAdmin}}
+        <select>
+          <option value="null">Choose role...</option>
+          <option value="unpaid">unpaid member</option>
+          <option value="member">member</option>
+          <option value="mod">moderator</option>
+          <option value="admin">admin</option>
+        </select>
+        {{/unless}}
+      </form>
     </th>
   </tr>
   {{/each}}

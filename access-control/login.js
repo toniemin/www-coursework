@@ -1,14 +1,17 @@
-
+/**
+ * WWW Programming 2019 - Coursework - Discussion forum.
+ * 
+ * Contains login function used by the front-end to let users log in to the system.
+ * Sends the user a jsonwebtoken for REST API verification.
+ */
 
 const jwt = require("jsonwebtoken");
 const User = require("../model/model").User;
 const Permission = require("../model/model").Permission;
 const bcrypt = require("bcryptjs");
 
-// /login route handler. Logs the user in if username 
-// and password match and are in the database.
+// Let user log in with username and password.
 const login = exports.login = (req, res, next) => {
-  // Load user credentials.
   let username = req.body.username;
   let password = req.body.password;
 
@@ -53,7 +56,7 @@ const login = exports.login = (req, res, next) => {
 
         req.session.role = permission.name;
 
-        // Prepare JWT token and send it.
+        // Prepare jsonwebtoken and send it.
         let payload = {
           permission_level: user.permission_level
         };

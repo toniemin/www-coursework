@@ -1,7 +1,8 @@
 /**
  * WWW Programming 2019 - Coursework - Discussion forum.
  * 
- * Main file of the application. This application implements a simple discussion forum site.
+ * Main file of the application. This application implements a simple discussion forum site,
+ * from which the actual discussion forum part is stripped out because of reasons.
  * The site uses a simple REST API for all the data. The app uses MVC structure.
  */
 
@@ -21,7 +22,8 @@ const indexActionList = require("./views/helper").indexActionList;
 
 
 // Routers for hbs web templates and the REST API.
-const router = require("./routes/index");
+const front_router = require("./routes/index");
+const file_router = require("./routes/files");
 const api_router = require("./routes/api_router");
 
 const hostname = "0.0.0.0";
@@ -33,13 +35,22 @@ const app = express();
 app.use(helmet());
 
 // Register body-parser.
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use((error, req, res, next) => {
+  if (error instanceof SyntaxError) {
+    console.error(error);
+    res.sendStatus(400);
+    return;
+  }
+
+  next();
+});
 
 // Register session handler.
 app.use(session({
   secret: "sampleText",
-  store: new MongoStore( { mongooseConnection: db_connection }),
+  store: new MongoStore({ mongooseConnection: db_connection }),
   resave: false,
   saveUninitialized: true
 }));
@@ -55,7 +66,11 @@ const hbs = exhbs.create({
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
-app.use("/", router);
+// Router for the front-end (handlebars).
+app.use("/", front_router);
+
+// Router for files used by the front-end.
+app.use("/public", file_router);
 
 // Register authentication middleware.
 app.use("/api", tokenVerifier);

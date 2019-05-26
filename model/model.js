@@ -11,6 +11,9 @@ const validator = require('validator');
 const hostname = "0.0.0.0" // IMPORT HOSTNAME
 const port = 3000; // IMPORT PORT NUMBER
 
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
 mongoose.connect(`mongodb://localhost/forums`, {useNewUrlParser: true});
 
 const db = exports.db_connection = mongoose.connection;
@@ -22,6 +25,7 @@ db.once("open", () => {
 
 const ObjectId = Schema.Types.ObjectId;
 
+// Schema representing a discussion comment.
 const postSchema = new Schema({
   user: {
     type: ObjectId,
@@ -76,11 +80,12 @@ const threadSchema = new Schema({
 
 const Thread = exports.Thread = mongoose.model("Threads", threadSchema);
 
-
-// Schema representing a user in the system.
-// 'role' is a reference to the RoleSchema 'id',
-// 'days_to_payment' is a number describing days
-// to user's next member fee payment
+/*
+ * Schema representing a user in the system.
+ * 'role' is a reference to the PermissionSchema 'id',
+ * 'days_to_payment' is a number describing days
+ * to user's next member fee payment.
+ */
 const UserSchema = new Schema({
   username: {
     type: String,
@@ -93,7 +98,14 @@ const UserSchema = new Schema({
     type: ObjectId,
     ref: "Permission",
     required: false,
-    default: null
+    default: function() {
+      Permission.findOne({name: "unpaid"}, (err, doc) => {
+        if (err || doc == null) {
+          return null;
+        }
+        return doc._id;
+      });
+    }
   },
   email: {
     type: String,
@@ -118,6 +130,13 @@ const UserSchema = new Schema({
 
 const User = exports.User = mongoose.model("Users", UserSchema);
 
+/*
+ * Schema representing a REST API action.
+ * Consists of the path to the API call,
+ * the allowed verb to the API call,
+ * and the attributes the API call can
+ * see/edit.
+ */
 const actionSchema = new Schema({
   path: {
     type: String,
@@ -137,6 +156,13 @@ const actionSchema = new Schema({
 
 const Action = exports.Action = mongoose.model("Actions", actionSchema);
 
+/*
+ * Schema representing a permission/role.
+ * Each user has one permission object that defines
+ * their role and what they can do (to the REST API).
+ * What the user can do is defined with an array of
+ * actions objects (see above).
+ */
 const permissionSchema = new Schema({
   level: {
     type: Number,

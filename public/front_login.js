@@ -1,4 +1,12 @@
+/**
+ * WWW Programming 2019 - Coursework - Discussion forum.
+ * 
+ * Front-end script file for the login page.
+ * Allows the user log in to the system. Fetches jsonwebtoken from the server.
+ */
 
+ // Send log-in credentials to the server, receive a jsonwebtoken
+ // and save it to the user's computer to localStorage.
 function sendData() {
   // Reference to output on the state of the login.
   let output = document.getElementById("output");
@@ -26,7 +34,8 @@ function sendData() {
       // Read response.
       response.json().then(function (data) {
         // Save JWT access token to user's computer.
-        localStorage.setItem("access_token", data["token"]);
+        localStorage.setItem("access-token", "bearer " + data["token"]);
+        console.log("jwt: ", localStorage.getItem("access-token"));
 
         // Save the fact that user logged in to a cookie.
         // JWT expires in 30 mins and so will this cookie.

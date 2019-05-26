@@ -1,70 +1,43 @@
 /**
  * WWW Programming 2019 - Coursework - Discussion forum.
  * 
- * Router for the hbs template engine.
+ * Router mainly for the handlebars front-end but also routes
+ * login/logout functionality.
  */
 
 const router = require("express").Router();
-const path = require("path");
 
 const loginController = require("../access-control/login").login;
 const userController = require("../controllers/userController");
-const Thread = require("../model/model").Thread;
-const User = require("../model/model").User;
 
-router.get("/", (req, res) => {
-  // Get all thread headlines from the database.
-  Thread.find({}, (err, threads) => {
-    if (err) {
-      console.error(err);
-      res.sendStatus(500);
-      return;
-    }
+const index = require("../front-end/index").index;
+const userList = require("../front-end/userList").userList;
+const payFee = require("../front-end/payFee").payFee;
+const deleteAccount = require("../front-end/deleteAccount").deleteAccount;
+const updateInformation = require("../front-end/updateInformation").updateInformation;
+const settings = require("../front-end/settings").settings;
 
-    if (typeof req.session.username === "undefined") {
-      // User not logged in, display base page.
-      res.render("index", {
-        userLoggedIn: false,
-        isUserMember: false,
-        isUserMod: false,
-        threads,
-        script: "../public/front_index.js"
-      });
-      return;
-    }
+// Handle membership fee payment from the handlebars website.
+router.post("/payFee", payFee);
 
-    // Render the actions the user can do according to their permission level (role).
-    let userLoggedIn = true, isUserMember = false, isUserMod = false;
-    let role = req.session.role;
+// Handle account deletion from the handlebars website.
+router.post("/deleteAccount", deleteAccount);
 
-    for (const value of ["member", "mod", "admin"]) {
-      if (role === value) {
-        isUserMember = true;
-      }
-    }
+// Renders the main page of the website.
+router.get("/", index);
 
-    for (const value of ["mod", "admin"]) {
-      if (role === value) {
-        isUserMod = true;
-      }
-    }
-
-    res.render("index", {
-      userLoggedIn,
-      isUserMember,
-      isUserMod,
-      threads,
-      script: "../public/front_index.js"
-    });
-  });
-});
-
+// Render the login page of the website.
 router.get("/login", (req, res) => {
+  if (req.session.username) {
+    res.redirect("/");
+  }
+
   res.render("login", {
     script: "../public/front_login.js"
   });
 });
 
+// Handle user logout.
 router.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -75,45 +48,30 @@ router.get("/logout", (req, res) => {
   });
 });
 
-router.get("/userList", (req, res) => {
-  let role = req.session.role;
+// Renders the user administration page of the website.
+router.get("/userList", userList);
 
-  if (!role in ["mod", "admin"]) {
+// Handle PUT requests to /api/users for the handlebars website.
+router.post("/updateInformation", updateInformation);
+
+// Render the user settings page.
+router.get("/settings", settings);
+
+// Handle user login request.
+router.post("/login", loginController);
+
+// Render registration page for the handlebars website.
+router.get("/register", (req, res) => {
+  if (req.session.username) {
     res.redirect("/");
-    return;
   }
 
-  let isAdmin = role === "admin";
-  User.find({}, (err, users) => {
-    res.render("userList", {
-      isAdmin,
-      users,
-      script: "../public/front_userList.js"
-    });
+  res.render("register", {
+    script: "../public/front_register.js"
   });
 });
 
-router.get("/public/front_userList.js", (req, res) => {
-  let filepath = path.join(__dirname, "..", "/public/front_userList.js");
-  res.sendFile(filepath);
-});
-
-router.get("/public/front_login.js", (req, res) => {
-  let filepath = path.join(__dirname, "..", "/public/front_login.js");
-  res.sendFile(filepath);
-});
-
-router.get("/public/front_index.js", (req, res) => {
-  let filepath = path.join(__dirname, "..", "/public/front_index.js");
-  res.sendFile(filepath);
-});
-
-router.post("/login", loginController);
-
-router.get("/register", (req, res) => {
-  res.render("register");
-});
-
+// Handle creation of a new user from the handlebars website.
 router.post("/register", userController.create);
 
 module.exports = router;

@@ -71,8 +71,7 @@ function createPermission(level, name, actions, user) {
       }
       console.log(`Permission lists created. Creating a new user...`);
       // Create a user and give them these permissions.
-
-      // 
+      // Hash the password.
       bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(user.password, salt, (err, hash) => {
           let userModel = new User({

@@ -1,0 +1,32 @@
+<h2>User settings</h2>
+<p>Username: {{username}}</p>
+<p>Email: {{email}}</p>
+<p>Membership days remaining: {{days_to_payment}}</p>
+<input type="hidden" value={{userId}} id="userId" />
+<input type="button" value="Delete account" id="del-btn" />
+<input type="button" value="Pay membership fee" id="pay-btn" />
+<h3>Change password</h3>
+<form id="passwd-form">
+  <label for="password">New password:</label>
+  <input type="password" name="password" id="passwd" />
+  
+  <label for="conf_password">Confirm new password:</label>
+  <input type="password" name="conf_password" id="conf_passwd" />
+
+  <input type="submit" value="Change password" />
+</form>
+
+<h3>Change email</h3>
+
+<form id="email-form">
+  <label for="email">New email:</label>
+  <input type="text" name="email" id="email" />
+
+  <label for="conf_email">Confirm new email:</label>
+  <input type="text" name="conf_email" id="conf_email" />
+
+  <input type="submit" value="Change email" />
+</form>
+
+<p id="output"></p>
+<script src={{script}}></script>

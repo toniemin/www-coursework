@@ -1,20 +1,36 @@
+/**
+ * WWW Programming 2019 - Coursework - Discussion forum.
+ * 
+ * Defines the middleware the system uses for jsonwebtoken authentication.
+ */
 
 const Permission = require("../model/model").Permission;
 const jwt = require("jsonwebtoken");
 
+// Checks that the client supplied jsonwebtoken has the required
+// permissions for the API call.
 const verifyToken = exports.verifyToken = (req, res, next) => {
-  if (req.path === "/") next();
-
-  let bearerHeader = req.headers["authorization"];
-
-  if (typeof bearerHeader === "undefined" || bearerHeader === null) {
-    res.sendStatus(403);
+  // Index doesn't require authentication.
+  if (req.path === "/") {
+    next();
+    return;
+  }
+  // Allow unregistered users to register to the system.
+  if (req.path === "/users" && req.method === "POST") {
+    next();
     return;
   }
 
-  // Extract token from the header.
+  // Extract jsonwebtoken.
+  let bearerHeader = req.headers["authorization"];
+  if (typeof bearerHeader === "undefined" || bearerHeader === null) {
+    res.sendStatus(403);
+    console.error("Token undefined or missing.");
+    return;
+  }
   let bearerToken = bearerHeader.split(" ")[1];
 
+  // Verify token.
   jwt.verify(bearerToken, "verySecretKey", (err, authData) => {
     if (err) {
       res.sendStatus(403);
@@ -40,9 +56,12 @@ const verifyToken = exports.verifyToken = (req, res, next) => {
       // user can access.
       let actions = permission.actions;
       let allowed_attributes = null;
-      for (let i=0; i < actions.length; i++) {
+      let currentPath = "/api"+req.path;
+      for (let i = 0; i < actions.length; i++) {
         let action = actions[i];
-        if (action.path === "/api"+req.path && action.verb === req.method) {
+        let correctPath = action.path;
+
+        if (currentPath.includes(action.path) && action.verb === req.method) {
           allowed_attributes = action.attributes;
         }
       }
@@ -54,20 +73,21 @@ const verifyToken = exports.verifyToken = (req, res, next) => {
         return;
       }
 
-      // The user can access all of the attributes.
+      // The user can access all of the attributes (admin priviledges).
       if (allowed_attributes[0] === "All") {
         next();
         return;
       }
 
+      // Remove unallowed attributes from the request body.
       let requestObject = req.body;
       for (key in Object.keys(requestObject)) {
         if (!allowed_attributes.includes(key)) {
           delete requestObject[key];
         }
       }
-
       req.body = requestObject;
+      
       next();
     });
   });
